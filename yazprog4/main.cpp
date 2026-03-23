@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <functional>
 #include <cmath>
+#include <iterator>
 
 using namespace std;
 using namespace std::placeholders;
@@ -26,25 +27,20 @@ int main() {
         return 1;
     }
 
-    int n;
-    cout << "Введите количество элементов вектора: ";
-    cin >> n;
+    cout << "Введите целые числа через пробел (Ctrl+Z для завершения ввода): ";
+    copy(istream_iterator<int>(cin), istream_iterator<int>(), back_inserter(V));
 
-    cout << "Введите " << n << " целых чисел через пробел: ";
-    for (int i = 0; i < n; i++) {
-        int x;
-        cin >> x;
-        V.push_back(x);
+    if (V.empty()) {
+        cout << "Вектор пуст. Завершение программы." << endl;
+        return 0;
     }
 
     cout << "Исходный вектор: ";
-    for (int val : V) {
-        cout << val << " ";
-    }
+    copy(V.begin(), V.end(), ostream_iterator<int>(cout, " "));
     cout << endl;
 
     auto new_end = remove_if(V.begin(), V.end(),
-        bind(less_abs(), _1, K)); 
+        bind(less_abs(), _1, K));
 
     V.erase(new_end, V.end());
 
@@ -55,9 +51,7 @@ int main() {
         cout << "вектор пуст";
     }
     else {
-        for (int val : V) {
-            cout << val << " ";
-        }
+        copy(V.begin(), V.end(), ostream_iterator<int>(cout, " "));
     }
     cout << endl;
 
